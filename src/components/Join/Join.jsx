@@ -21,19 +21,45 @@ const Join = () => {
 
   const submitFormData = async (e) => {
     e.preventDefault();
-    console.log(formData);
+  
     try {
-      // Simulate form submission by logging form data
+      // Assuming formData contains the form data
       console.log("Form data submitted:", formData);
+  
+      // Send form data to server
+      const response = await fetch('http://localhost:8000/api/user/putdata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+
+  
+      if (!response.ok) {
+        throw new Error('Failed to submit form data');
+      }
+  
+      // Assuming the server responds with a success message
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
+  
+      // Clear form data after successful submission
+      setFormData({});
+  
+      // Set flags to display success message and hide error message
       setShowSuccessMessage(true);
       setShowErrorMessage(false);
-      setFormData({}); // Clear form data after submission
     } catch (error) {
       console.error("Error submitting form data:", error);
+  
+      // Set flags to display error message and hide success message
       setShowSuccessMessage(false);
       setShowErrorMessage(true);
     }
   };
+  
 
   const handleRefresh = () => {
     // Navigate back in the browser's history
